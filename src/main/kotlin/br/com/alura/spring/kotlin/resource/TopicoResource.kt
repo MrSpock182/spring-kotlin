@@ -1,6 +1,6 @@
 package br.com.alura.spring.kotlin.resource
 
-import br.com.alura.spring.kotlin.domain.dto.DetalhesDoTopicoDto
+import br.com.alura.spring.kotlin.domain.dto.TopicoDetalhadoDto
 import br.com.alura.spring.kotlin.domain.dto.TopicoRequestDto
 import br.com.alura.spring.kotlin.domain.enumerable.StatusTopicoEnum
 import org.springframework.cache.annotation.CacheEvict
@@ -22,8 +22,8 @@ class TopicoResource {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = ["/"])
-    fun detalhar() : DetalhesDoTopicoDto {
-        return DetalhesDoTopicoDto(
+    fun detalhar() : TopicoDetalhadoDto {
+        return TopicoDetalhadoDto(
             id = null,
             titulo = "Alura",
             dataCriacao = LocalDateTime.now(),
