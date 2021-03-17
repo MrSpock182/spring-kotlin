@@ -1,4 +1,4 @@
-package br.com.alura.spring.kotlin.domain
+package br.com.alura.spring.kotlin.domain.dto
 
 import org.hibernate.validator.constraints.Length
 import javax.validation.constraints.NotEmpty
