@@ -10,6 +10,7 @@ data class Topico(
     var id: Long? = null,
     val titulo: String,
     val mensagem: String,
+    val totalCurtiu: Int,
     val dataCriacao: LocalDateTime = LocalDateTime.now(),
     @Enumerated(EnumType.STRING)
     val status: StatusTopicoEnum = StatusTopicoEnum.NAO_RESPONDIDO,
