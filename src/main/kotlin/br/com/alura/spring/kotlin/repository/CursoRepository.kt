@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface CursoRepository : JpaRepository<Curso, Long> {
+    fun findByNome(nome: String) : Curso
 }
