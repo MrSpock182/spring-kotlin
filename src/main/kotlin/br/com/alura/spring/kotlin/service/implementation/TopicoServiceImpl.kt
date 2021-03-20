@@ -10,6 +10,8 @@ import br.com.alura.spring.kotlin.repository.CursoRepository
 import br.com.alura.spring.kotlin.repository.TopicoRepository
 import br.com.alura.spring.kotlin.repository.orm.Topico
 import br.com.alura.spring.kotlin.service.TopicoService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.stream.Collectors
@@ -100,4 +102,22 @@ class TopicoServiceImpl(
         is CurtiuOperacao.NaoCurtiu -> x - 1
     }
 
+    override fun listar(nomeCurso: String?, paginacao: Pageable): Page<TopicoResponseDto> {
+        return if (nomeCurso == null) {
+            cast(topicoRepository.findAll(paginacao))
+        } else {
+            cast(topicoRepository.findByCursoNome(paginacao = paginacao, nomeCurso = nomeCurso))
+        }
+    }
+
+    private fun cast(page: Page<Topico>) : Page<TopicoResponseDto> {
+        return page.map { v ->
+            TopicoResponseDto(
+                id = v.id,
+                titulo = v.titulo,
+                mensagem = v.mensagem,
+                dataCriacao = v.dataCriacao
+            )
+        }
+    }
 }

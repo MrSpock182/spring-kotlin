@@ -12,6 +12,11 @@ import br.com.alura.spring.kotlin.repository.orm.Curso
 import br.com.alura.spring.kotlin.repository.orm.Topico
 import br.com.alura.spring.kotlin.service.TopicoService
 import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
@@ -50,6 +55,16 @@ class TopicoResource(
     @GetMapping(value = ["/{id}"])
     fun detalhar(@PathVariable id: Long) : TopicoDetalhadoDto {
         return service.detalhar(id)
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Cacheable(value = ["listaDeTopicos"])
+    fun listar(
+        @RequestParam(required = false) nomeCurso: String?,
+        @PageableDefault(sort = ["dataCriacao"], direction = Sort.Direction.DESC, page = 0, size = 10) paginacao: Pageable
+    ): Page<TopicoResponseDto>? {
+        return service.listar(nomeCurso, paginacao)
     }
 
 }
