@@ -2,12 +2,14 @@ package br.com.alura.spring.kotlin.resource
 
 import br.com.alura.spring.kotlin.domain.dto.TopicoDetalhadoDto
 import br.com.alura.spring.kotlin.domain.dto.TopicoRequestDto
+import br.com.alura.spring.kotlin.domain.dto.TopicoResponseDto
 import br.com.alura.spring.kotlin.domain.enumerable.StatusTopicoEnum
 import br.com.alura.spring.kotlin.domain.sealed.CurtiuOperacao
 import br.com.alura.spring.kotlin.repository.CursoRepository
 import br.com.alura.spring.kotlin.repository.TopicoRepository
 import br.com.alura.spring.kotlin.repository.orm.Curso
 import br.com.alura.spring.kotlin.repository.orm.Topico
+import br.com.alura.spring.kotlin.service.TopicoService
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -17,8 +19,7 @@ import javax.validation.Valid
 @RestController
 @RequestMapping(value = ["/topicos"])
 class TopicoResource(
-    private val topicoRepository: TopicoRepository,
-    private val cursoRepository: CursoRepository
+    private val service: TopicoService
 ) {
 
     private var totalGostou: Int = 0
@@ -26,28 +27,8 @@ class TopicoResource(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CacheEvict(value = ["listaDeTopicos"], allEntries = true)
-    fun cadastrar(@RequestBody @Valid request: TopicoRequestDto): TopicoDetalhadoDto {
-        totalGostou = calculaGostou(totalGostou, request.curtiu)
-
-        val topicoBanco = topicoRepository.save(
-            Topico(
-                id = null,
-                titulo = request.titulo,
-                mensagem = request.mensagem,
-                totalGostou = totalGostou,
-                curso = cursoRepository.findByNome(request.nomeCurso)
-            )
-        )
-
-        return TopicoDetalhadoDto(
-            id = topicoBanco.id,
-            titulo = topicoBanco.titulo,
-            dataCriacao = LocalDateTime.now(),
-            mensagem = topicoBanco.mensagem,
-            status = StatusTopicoEnum.NAO_RESPONDIDO,
-            gostei = topicoBanco.totalGostou,
-            nomeAutor = "Kleber Nunes"
-        )
+    fun cadastrar(@RequestBody @Valid request: TopicoRequestDto): TopicoResponseDto {
+        return service.cadastrar(request)
     }
 
     @ResponseStatus(HttpStatus.OK)
