@@ -47,17 +47,9 @@ class TopicoResource(
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = ["/"])
-    fun detalhar(): TopicoDetalhadoDto {
-        return TopicoDetalhadoDto(
-            id = null,
-            titulo = "Alura",
-            dataCriacao = LocalDateTime.now(),
-            mensagem = "Esse é um topico alura",
-            status = StatusTopicoEnum.NAO_RESPONDIDO,
-            gostei = 10,
-            nomeAutor = "Kleber Nunes"
-        )
+    @GetMapping(value = ["/{id}"])
+    fun detalhar(@PathVariable id: Long) : TopicoDetalhadoDto {
+        return service.detalhar(id)
     }
 
 }

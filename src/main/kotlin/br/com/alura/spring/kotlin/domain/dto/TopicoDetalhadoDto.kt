@@ -8,7 +8,6 @@ data class TopicoDetalhadoDto(
     val titulo: String,
     val mensagem: String,
     val dataCriacao: LocalDateTime,
-    val nomeAutor: String,
     val gostei: Int,
     val status: StatusTopicoEnum,
 )

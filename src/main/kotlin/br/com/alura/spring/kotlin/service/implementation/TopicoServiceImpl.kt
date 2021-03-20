@@ -1,6 +1,7 @@
 package br.com.alura.spring.kotlin.service.implementation
 
 import br.com.alura.spring.kotlin.domain.dto.TopicoAtualizacaoDto
+import br.com.alura.spring.kotlin.domain.dto.TopicoDetalhadoDto
 import br.com.alura.spring.kotlin.domain.dto.TopicoRequestDto
 import br.com.alura.spring.kotlin.domain.dto.TopicoResponseDto
 import br.com.alura.spring.kotlin.domain.sealed.CurtiuOperacao
@@ -11,6 +12,7 @@ import br.com.alura.spring.kotlin.repository.orm.Topico
 import br.com.alura.spring.kotlin.service.TopicoService
 import org.springframework.stereotype.Service
 import java.util.*
+import java.util.stream.Collectors
 
 @Service
 class TopicoServiceImpl(
@@ -73,6 +75,24 @@ class TopicoServiceImpl(
         }
 
         topicoRepository.deleteById(id)
+    }
+
+    override fun detalhar(id: Long): TopicoDetalhadoDto {
+        val optional: Optional<Topico> = topicoRepository.findById(id)
+
+        if (optional.isEmpty) {
+            throw NotFoundException("Topico não encontrado")
+        }
+
+        val value: Topico = optional.get()
+        return TopicoDetalhadoDto(
+            id = value.id,
+            titulo = value.titulo,
+            mensagem = value.mensagem,
+            dataCriacao = value.dataCriacao,
+            gostei = value.totalGostou,
+            status = value.status
+        )
     }
 
     private fun calculaGostou(x: Int, op: CurtiuOperacao): Int = when (op) {
