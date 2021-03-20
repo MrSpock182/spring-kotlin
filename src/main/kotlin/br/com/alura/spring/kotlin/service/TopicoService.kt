@@ -8,4 +8,6 @@ interface TopicoService {
     fun cadastrar(request: TopicoRequestDto) : TopicoResponseDto
 
     fun atualizar(request: TopicoAtualizacaoDto) : TopicoResponseDto
+
+    fun remover(id: Long)
 }

@@ -65,6 +65,16 @@ class TopicoServiceImpl(
         )
     }
 
+    override fun remover(id: Long) {
+        val optional: Optional<Topico> = topicoRepository.findById(id)
+
+        if (optional.isEmpty) {
+            throw NotFoundException("Topico não encontrado")
+        }
+
+        topicoRepository.deleteById(id)
+    }
+
     private fun calculaGostou(x: Int, op: CurtiuOperacao): Int = when (op) {
         is CurtiuOperacao.Curtiu -> x + 1
         is CurtiuOperacao.NaoCurtiu -> x - 1

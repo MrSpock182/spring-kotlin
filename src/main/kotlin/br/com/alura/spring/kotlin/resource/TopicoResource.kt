@@ -38,6 +38,14 @@ class TopicoResource(
         return service.atualizar(request)
     }
 
+    @Transactional
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(value = ["/{id}"])
+    @CacheEvict(value = ["listaDeTopicos"], allEntries = true)
+    fun remover(@PathVariable id: Long) {
+        return service.remover(id)
+    }
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = ["/"])
     fun detalhar(): TopicoDetalhadoDto {
