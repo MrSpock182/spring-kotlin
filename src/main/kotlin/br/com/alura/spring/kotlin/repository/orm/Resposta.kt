@@ -11,5 +11,7 @@ data class Resposta(
     @ManyToOne
     val topico: Topico,
     val dataCriacao: LocalDateTime = LocalDateTime.now(),
+    @ManyToOne
+    val autor: Usuario,
     val solucao: Boolean
 )

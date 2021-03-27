@@ -15,6 +15,8 @@ data class Topico(
     @Enumerated(EnumType.STRING)
     val status: StatusTopicoEnum = StatusTopicoEnum.NAO_RESPONDIDO,
     @ManyToOne
+    val autor: Usuario? = null,
+    @ManyToOne
     val curso: Curso,
     @OneToMany(mappedBy = "topico")
     val respostas: List<Resposta> = ArrayList()

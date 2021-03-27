@@ -1,9 +1,6 @@
 package br.com.alura.spring.kotlin.service.implementation
 
-import br.com.alura.spring.kotlin.domain.dto.TopicoAtualizacaoDto
-import br.com.alura.spring.kotlin.domain.dto.TopicoDetalhadoDto
-import br.com.alura.spring.kotlin.domain.dto.TopicoRequestDto
-import br.com.alura.spring.kotlin.domain.dto.TopicoResponseDto
+import br.com.alura.spring.kotlin.domain.dto.*
 import br.com.alura.spring.kotlin.domain.sealed.CurtiuOperacao
 import br.com.alura.spring.kotlin.exception.NotFoundException
 import br.com.alura.spring.kotlin.repository.CursoRepository
@@ -37,7 +34,12 @@ class TopicoServiceImpl(
             id = topicoSalvo.id,
             titulo = topicoSalvo.titulo,
             mensagem = topicoSalvo.mensagem,
-            dataCriacao = topicoSalvo.dataCriacao
+            dataCriacao = topicoSalvo.dataCriacao,
+            nomeAutor = topicoSalvo.autor!!.nome,
+            status = topicoSalvo.status,
+            respostas = topicoSalvo.respostas.stream()
+                .map { v -> RespostaDto(v.id, v.mensagem, v.dataCriacao, v.autor.nome) }
+                .collect(Collectors.toList())
         )
     }
 
@@ -65,7 +67,12 @@ class TopicoServiceImpl(
             id = topicoSalvo.id,
             titulo = topicoSalvo.titulo,
             mensagem = topicoSalvo.mensagem,
-            dataCriacao = topicoSalvo.dataCriacao
+            dataCriacao = topicoSalvo.dataCriacao,
+            nomeAutor = topicoSalvo.autor!!.nome,
+            status = topicoSalvo.status,
+            respostas = topicoSalvo.respostas.stream()
+                .map { v -> RespostaDto(v.id, v.mensagem, v.dataCriacao, v.autor.nome) }
+                .collect(Collectors.toList())
         )
     }
 
@@ -93,7 +100,11 @@ class TopicoServiceImpl(
             mensagem = value.mensagem,
             dataCriacao = value.dataCriacao,
             gostei = value.totalGostou,
-            status = value.status
+            status = value.status,
+            nomeAutor = value.autor!!.nome,
+            respostas = value.respostas.stream()
+                .map { v -> RespostaDto(v.id, v.mensagem, v.dataCriacao, v.autor.nome) }
+                .collect(Collectors.toList())
         )
     }
 
@@ -110,13 +121,18 @@ class TopicoServiceImpl(
         }
     }
 
-    private fun cast(page: Page<Topico>) : Page<TopicoResponseDto> {
-        return page.map { v ->
+    private fun cast(page: Page<Topico>): Page<TopicoResponseDto> {
+        return page.map { value ->
             TopicoResponseDto(
-                id = v.id,
-                titulo = v.titulo,
-                mensagem = v.mensagem,
-                dataCriacao = v.dataCriacao
+                id = value.id,
+                titulo = value.titulo,
+                mensagem = value.mensagem,
+                dataCriacao = value.dataCriacao,
+                nomeAutor = value.autor!!.nome,
+                status = value.status,
+                respostas = value.respostas.stream()
+                    .map { v -> RespostaDto(v.id, v.mensagem, v.dataCriacao, v.autor.nome) }
+                    .collect(Collectors.toList())
             )
         }
     }

@@ -1,8 +1,8 @@
 package br.com.alura.spring.kotlin.interceptor
 
 import br.com.alura.spring.kotlin.domain.dto.ErrorResponse
-import com.example.alura.kotlin.exception.InternalServerError
-import com.example.alura.kotlin.exception.NotFoundException
+import br.com.alura.spring.kotlin.exception.InternalServerError
+import br.com.alura.spring.kotlin.exception.NotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody

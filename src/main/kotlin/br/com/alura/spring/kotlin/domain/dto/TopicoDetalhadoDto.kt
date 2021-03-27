@@ -10,4 +10,6 @@ data class TopicoDetalhadoDto(
     val dataCriacao: LocalDateTime,
     val gostei: Int,
     val status: StatusTopicoEnum,
+    val nomeAutor: String,
+    val respostas: List<RespostaDto>
 )
