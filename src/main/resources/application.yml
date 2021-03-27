@@ -19,3 +19,8 @@ spring:
       settings:
         trace: false
         web-allow-others: false
+
+alura:
+  jwt:
+    expiration: 36000
+    secret: S3cR3TytOSpr!nGBo0t
