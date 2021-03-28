@@ -2,6 +2,7 @@ package br.com.alura.spring.kotlin.service.implementation
 
 import br.com.alura.spring.kotlin.domain.dto.*
 import br.com.alura.spring.kotlin.domain.sealed.CurtiuOperacao
+import br.com.alura.spring.kotlin.exception.InternalServerError
 import br.com.alura.spring.kotlin.exception.NotFoundException
 import br.com.alura.spring.kotlin.repository.CursoRepository
 import br.com.alura.spring.kotlin.repository.TopicoRepository
@@ -20,27 +21,31 @@ class TopicoServiceImpl(
 ) : TopicoService {
 
     override fun cadastrar(request: TopicoRequestDto): TopicoResponseDto {
-        val topico = Topico(
-            id = null,
-            titulo = request.titulo,
-            mensagem = request.mensagem,
-            totalGostou = 0,
-            curso = cursoRepository.findByNome(request.nomeCurso)
-        )
+        try {
+            val topico = Topico(
+                id = null,
+                titulo = request.titulo,
+                mensagem = request.mensagem,
+                totalGostou = 0,
+                curso = cursoRepository.findByNome(request.nomeCurso)
+            )
 
-        val topicoSalvo = topicoRepository.save(topico)
+            val topicoSalvo = topicoRepository.save(topico)
 
-        return TopicoResponseDto(
-            id = topicoSalvo.id,
-            titulo = topicoSalvo.titulo,
-            mensagem = topicoSalvo.mensagem,
-            dataCriacao = topicoSalvo.dataCriacao,
-            nomeAutor = topicoSalvo.autor!!.nome,
-            status = topicoSalvo.status,
-            respostas = topicoSalvo.respostas.stream()
-                .map { v -> RespostaDto(v.id, v.mensagem, v.dataCriacao, v.autor.nome) }
-                .collect(Collectors.toList())
-        )
+            return TopicoResponseDto(
+                id = topicoSalvo.id,
+                titulo = topicoSalvo.titulo,
+                mensagem = topicoSalvo.mensagem,
+                dataCriacao = topicoSalvo.dataCriacao,
+                nomeAutor = topicoSalvo.autor!!.nome,
+                status = topicoSalvo.status,
+                respostas = topicoSalvo.respostas.stream()
+                    .map { v -> RespostaDto(v.id, v.mensagem, v.dataCriacao, v.autor.nome) }
+                    .collect(Collectors.toList())
+            )
+        } catch (ex: Exception) {
+            throw InternalServerError(ex)
+        }
     }
 
     override fun atualizar(request: TopicoAtualizacaoDto): TopicoResponseDto {

@@ -1,13 +1,18 @@
 package br.com.alura.spring.kotlin
 
-import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader
+import org.junit.Before
+import org.junit.runner.RunWith
+import org.mockito.junit.MockitoJUnitRunner
 
-@SpringBootTest
-class SpringKotlinApplicationTests {
+@RunWith(MockitoJUnitRunner::class)
+abstract class SpringKotlinApplicationTests {
 
-	@Test
-	fun contextLoads() {
+	@Before
+	open fun setUp() {
+		FixtureFactoryLoader.loadTemplates("br.com.alura.spring.kotlin")
 	}
 
+	@Before
+	abstract fun init()
 }
